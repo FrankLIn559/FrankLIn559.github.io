@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="Lin">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Lin">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="Linjw">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>前后端分离的思考与实践 · Linjw&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.png" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Linjw&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">前后端分离的思考与实践</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Linjw's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            前后端分离的思考与实践
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Tech">Tech</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">3.1k</span>阅读时长: <span class="post-count reading-time">10 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/11/01</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>随着不同终端（Pad/Mobile/PC）的兴起，对开发人员的要求越来越高，纯浏览器端的响应式已经不能满足用户体验的高要求，我们往往需要针对不同的终端开发定制的版本。为了提升开发效率，前后端分离的需求越来越被重视，后端负责业务/数据接口，前端负责展现/交互逻辑，同一份数据接口，我们可以定制开发多个版本。</p>
+<p>这个话题最近被讨论得比较多，阿里有些 BU 也在进行一些尝试。讨论了很久之后，我们团队决定探索一套基于 Node.js 的前后端分离方案，过程中有一些不断变化的认识以及思考，记录在这里，也希望看到的同学参与讨论，帮我们完善。</p>
+<h2 id="一、什么是前后端分离？"><a href="#一、什么是前后端分离？" class="headerlink" title="一、什么是前后端分离？"></a>一、什么是前后端分离？</h2><p>最开始组内讨论的过程中我发现，每个人对前后端分离的理解不一样，为了保证能在同一个频道讨论，先就什么是”前后端分离”达成一致。</p>
+<p>大家一致认同的前后端分离的例子就是 SPA(<code>Single Page Application</code>)，所有用到的展现数据都是后端通过异步接口（<code>AJAX/JSONP</code>）的方式提供的，前端只管展现。</p>
+<p>从某种意义上来说，SPA 确实做到了前后端分离，但这种方式存在两个问题：</p>
+<ul>
+<li>WEB 服务中，SPA 类占的比例很少。很多场景下还有同步/同步+异步混合的模式，SPA 不能作为一种通用的解决方案。</li>
+<li>现阶段的 SPA 开发模式，接口通常是按照展现逻辑来提供的，有时候为了提高效率，后端会帮我们处理一些展现逻辑，这就意味着后端还是涉足了 View 层的工作，不是真正的前后端分离。</li>
+</ul>
+<p>SPA 式的前后端分离，是从物理层做区分（认为只要是客户端的就是前端，服务器端的就是后端），这种分法已经无法满足我们前后端分离的需求，我们认为从职责上划分才能满足目前我们的使用场景：</p>
+<ul>
+<li>前端：负责 View 和 Controller 层。</li>
+<li>后端：只负责 Model 层，业务处理/数据等。</li>
+</ul>
+<p>为什么去做这种职责的划分，后面会继续探讨。</p>
+<h2 id="二、为什么要前后端分离？"><a href="#二、为什么要前后端分离？" class="headerlink" title="二、为什么要前后端分离？"></a>二、为什么要前后端分离？</h2><p>关于这个问题，玉伯的文章《<a href="https://github.com/lifesinger/blog/issues/184" target="_blank" rel="noopener">Web 研发模式演变</a>》中解释得非常全面，我们再大概理一下：</p>
+<h4 id="2-1-现有开发模式的适用场景"><a href="#2-1-现有开发模式的适用场景" class="headerlink" title="2.1 现有开发模式的适用场景"></a>2.1 现有开发模式的适用场景</h4><p>玉伯提到的几种开发模式，各有各的适用场景，没有哪一种完全取代另外一种。</p>
+<ul>
+<li>比如后端为主的 MVC，做一些同步展现的业务效率很高，但是遇到同步异步结合的页面，与后端开发沟通起来就会比较麻烦。</li>
+<li>AJAX 为主 SPA 型开发模式，比较适合开发 APP 类型的场景，但是只适合做 APP，因为 SEO 等问题不好解决，对于很多类型的系统，这种开发方式也过重。</li>
+</ul>
+<h4 id="2-2-前后端职责不清"><a href="#2-2-前后端职责不清" class="headerlink" title="2.2 前后端职责不清"></a>2.2 前后端职责不清</h4><p>在业务逻辑复杂的系统里，我们最怕维护前后端混杂在一起的代码，因为没有约束，<code>M-V-C</code> 每一层都可能出现别的层的代码，日积月累，完全没有维护性可言。</p>
+<p>虽然前后端分离没办法完全解决这种问题，但是可以大大缓解。因为从物理层次上保证了你不可能这么做。</p>
+<h4 id="2-3-开发效率问题"><a href="#2-3-开发效率问题" class="headerlink" title="2.3 开发效率问题"></a>2.3 开发效率问题</h4><p>淘宝的 Web 基本上都是基于 MVC 框架 <code>webx</code>，架构决定了前端只能依赖后端。</p>
+<p>所以我们的开发模式依然是，前端写好静态 demo，后端翻译成 VM 模版，这种模式的问题就不说了，被吐槽了很久。<br>直接基于后端环境开发也很痛苦，配置安装使用都很麻烦。</p>
+<p>为了解决这个问题，我们发明了各种工具，比如 VMarket，但是前端还是要写 VM，而且依赖后端数据，效率依然不高。<br>另外，后端也没法摆脱对展现的强关注，从而专心于业务逻辑层的开发。</p>
+<h4 id="2-4-对前端发挥的局限"><a href="#2-4-对前端发挥的局限" class="headerlink" title="2.4 对前端发挥的局限"></a>2.4 对前端发挥的局限</h4><p>性能优化如果只在前端做空间非常有限，于是我们经常需要后端合作才能碰撞出火花，但由于后端框架限制，我们很难使用 <code>Comet</code>、<code>Bigpipe</code> 等技术方案来优化性能。</p>
+<p>为了解决以上提到的一些问题，我们进行了很多尝试，开发了各种工具，但始终没有太多起色，主要是因为我们只能在后端给我们划分的那一小块空间去发挥。只有真正做到前后端分离，我们才能彻底解决以上问题。</p>
+<h2 id="三、怎么做前后端分离？"><a href="#三、怎么做前后端分离？" class="headerlink" title="三、怎么做前后端分离？"></a>三、怎么做前后端分离？</h2><p>怎么做前后端分离，其实第一节中已经有了答案：</p>
+<ul>
+<li>前端：负责 View 和 Controller 层。</li>
+<li>后端：负责 Model 层，业务处理/数据等。</li>
+</ul>
+<p><img src="https://img.alicdn.com/tps/TB1yMyNPVXXXXaPaXXXXXXXXXXX-555-263.png" alt="img"></p>
+<p>试想一下，如果前端掌握了 <code>Controller</code>，我们可以做 URL design，我们可以根据场景决定在服务端同步渲染，还是根据 View 层数据输出 JSON 数据，我们还可以根据表现层需求很容易的做 Bigpipe，Comet，Socket 等等，完全是需求决定使用方式。</p>
+<h4 id="3-1-基于NodeJS“全栈”式开发"><a href="#3-1-基于NodeJS“全栈”式开发" class="headerlink" title="3.1 基于NodeJS“全栈”式开发"></a>3.1 基于NodeJS“全栈”式开发</h4><p>如果想实现上图的分层，就必然需要一种web服务帮我们实现以前后端做的事情，于是就有了标题提到的“基于NodeJS的全栈式开发”。</p>
+<p><img src="https://img.alicdn.com/tps/TB10.2tPVXXXXbUXXXXXXXXXXXX-590-611.png" alt="img"></p>
+<p>这张图看起来简单而且很好理解，但没尝试过，会有很多疑问。</p>
+<ul>
+<li>SPA 模式中，后端已供了所需的数据接口，View 前端已经可以控制，为什么要多加 Node.js 这一层？</li>
+<li>多加一层，性能怎么样？</li>
+<li>多加一层，前端的工作量是不是增加了？</li>
+<li>多加一层就多一层风险，怎么破？</li>
+<li>Node.js 什么都能做，为什么还要 Java？</li>
+</ul>
+<p>这些问题要说清楚不容易，下面说下我的认识过程。</p>
+<h4 id="3-2-为什么要增加一层-Node-js？"><a href="#3-2-为什么要增加一层-Node-js？" class="headerlink" title="3.2 为什么要增加一层 Node.js？"></a>3.2 为什么要增加一层 Node.js？</h4><p>现阶段我们主要以后端 MVC 的模式进行开发，这种模式严重阻碍了前端开发效率，也让后端不能专注于业务开发。<br>解决方案是让前端能控制 <code>Controller</code> 层，但是如果在现有技术体系下很难做到，因为不可能让所有前端都学 Java，安装后端的开发环境，写 VM。<br>Node.js 就能很好的解决这个问题，我们无需学习一门新的语言，就能做到以前开发帮我们做的事情，一切都显得那么自然。</p>
+<h4 id="3-3-性能问题"><a href="#3-3-性能问题" class="headerlink" title="3.3 性能问题"></a>3.3 性能问题</h4><p>分层就涉及每层之间的通讯，肯定会有一定的性能损耗。但是合理的分层能让职责清晰、也方便协作，会大大提高开发效率。分层带来的损失，一定能在其他方面的收益弥补回来。</p>
+<p>另外，一旦决定分层，我们可以通过优化通讯方式、通讯协议，尽可能把损耗降到最低。</p>
+<p>举个例子：</p>
+<p>淘宝宝贝详情页静态化之后，还是有不少需要实时获取的信息，比如物流、促销等等，因为这些信息在不同业务系统中，所以需要前端发送 5，6 个异步请求来回填这些内容。</p>
+<p>有了 Node.js 之后，前端可以在 Node.js 中去代理这 5 个异步请求，还能很容易的做 Bigpipe，这块的优化能让整个渲染效率提升很多。</p>
+<p>可能在 PC 上你觉得发 5、6 个异步请求也没什么，但是在无线端，在客户手机上建立一个 HTTP 请求开销很大，有了这个优化，性能一下提升好几倍。</p>
+<p>淘宝详情基于 Node.js 的优化我们正在进行中，上线之后我会分享一下优化的过程。</p>
+<h4 id="3-4-前端的工作量是否增加了？"><a href="#3-4-前端的工作量是否增加了？" class="headerlink" title="3.4 前端的工作量是否增加了？"></a>3.4 前端的工作量是否增加了？</h4><p>相对于只切页面/做 demo，肯定是增加了一点，但是当前模式下有联调、沟通环节，这个过程非常花时间，也容易出 bug，还很难维护。所以，虽然工作量会增加一点，但是总体开发效率会提升很多。</p>
+<p>另外，测试成本可以节省很多。以前开发的接口都是针对表现层的，很难写测试用例。如果做了前后端分离，甚至测试都可以分开，一拨人专门测试接口，一拨人专注测试 UI（这部分工作甚至可以用工具代替）。</p>
+<h4 id="3-5-增加-Node-js-层带来的风险怎么控制？"><a href="#3-5-增加-Node-js-层带来的风险怎么控制？" class="headerlink" title="3.5 增加 Node.js 层带来的风险怎么控制？"></a>3.5 增加 Node.js 层带来的风险怎么控制？</h4><p>随着 Node.js 大规模使用，系统/运维/安全部门的同学也一定会加入到基础建设中，他们会帮助我们去完善各个环节可能出现的问题，保障系的稳定性。</p>
+<h4 id="3-6-Node-js-什么都能做，为什么还要-Java？"><a href="#3-6-Node-js-什么都能做，为什么还要-Java？" class="headerlink" title="3.6 Node.js 什么都能做，为什么还要 Java？"></a>3.6 Node.js 什么都能做，为什么还要 Java？</h4><p>我们的初衷是做前后端分离，如果考虑这个问题就有点违背我们的初衷了。即使用 Node.js 替代 Java，我们也没办法保证不出现今天遇到的种种问题，比如职责不清。我们的目的是分层开发，专业的人，专注做专业的事。基于 Java 的基础架构已经非常强大而且稳定，而且更适合做现在架构的事情。</p>
+<h2 id="四、淘宝基于-Node-js-的前后端分离"><a href="#四、淘宝基于-Node-js-的前后端分离" class="headerlink" title="四、淘宝基于 Node.js 的前后端分离"></a>四、淘宝基于 Node.js 的前后端分离</h2><p><img src="https://img.alicdn.com/tps/TB1q2iWPVXXXXX6XVXXXXXXXXXX-800-521.jpg" alt="img"></p>
+<p>上图是我理解的淘宝基于 Node.js 的前后端分离分层，以及 Node.js 的职责范围。简单解释下：</p>
+<ul>
+<li>最上端是服务端，就是我们常说的后端。后端对于我们来说，就是一个接口的集合，服务端提供各种各样的接口供我们使用。因为有 Node.js 层，也不用局限是什么形式的服务。对于后端开发来说，他们只用关心业务代码的接口实现。</li>
+<li>服务端下面是 Node.js 应用。</li>
+<li>Node.js 应用中有一层 Model Proxy 与服务端进行通讯。这一层主要目前是抹平我们对不同接口的调用方式，封装一些 View 层需要的 Model。</li>
+<li>Node.js 层还能轻松实现原来 vmcommon, tms（引用淘宝内容管理系统）等需求。</li>
+<li>Node.js 层要使用什么框架由开发者自己决定。不过推荐使用 Express + XTemplate 的组合，XTemplate 能做到前后端公用。</li>
+<li>怎么用 Node.js 大家自己决定，但是令人兴奋的是，我们终于可以使用 Node.js 轻松实现我们想要的输出方式： JSON/JSONP/RESTful/HTML/BigPipe/Comet/Socket/同步、异步，想怎么整就怎么整，完全根据你的场景决定。</li>
+<li>浏览器层在我们这个架构中没有变化，也不希望因为引入 Node.js 改变你以前在浏览器中开发的认知。</li>
+<li>引入 Node.js，只是把本该就前端控制的部分交由前端掌控。</li>
+</ul>
+<p>这种模式我们已经有两个项目在开发中，虽然还没上线，但是无论是在开发效率，还是在性能优化方面，我们都已经尝到了甜头。</p>
+<h2 id="五、我们还需要要做什么？"><a href="#五、我们还需要要做什么？" class="headerlink" title="五、我们还需要要做什么？"></a>五、我们还需要要做什么？</h2><ul>
+<li>把 Node.js 的开发流程集成到淘宝现有的 SCM 流程中。</li>
+<li>基础设施建设，比如 session, logger 等通用模块。</li>
+<li>最佳开发实践</li>
+<li>线上成功案例</li>
+<li>大家对 Node.js 前后端分离概念的认识</li>
+<li>安全</li>
+<li>性能</li>
+<li>…</li>
+</ul>
+<p>技术上不会有太多需要去创新和研究的，已经有非常多现成的积累。其实关键是一些流程的打通和通用解决方案的积累，相信随着更多的项目实践，这块慢慢会变成一个稳定的流程。</p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://linjw.com">Lin</a>
+            <p>原文链接：<a href="http://linjw.com/2019/11/01/">http://linjw.com/2019/11/01/</a>
+            <p>发表日期：<a href="http://linjw.com/2019/11/01/">November 1st 2019, 5:24:05 pm</a>
+            <p>更新日期：<a href="http://linjw.com/2019/11/01/">November 8th 2019, 4:18:26 pm</a>
+            <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/11/02/" title= "移动端开发小记 - Flexbox">
+                    <div class="nextTitle">移动端开发小记 - Flexbox</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/06/09/" title= "为什么你要写博客">
+                    <div class="prevTitle">为什么你要写博客</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <div id="comment"></div>
+    <script>
+    new Valine({
+        el: '#comment' ,
+        notify:false, 
+        verify:false, 
+        appId: "r2Hqhq9vJIggLm4Jjg1Sz7cp-gzGzoHsz",
+        appKey: "aH3DGxVNmpiWMhDeg7soNhRo",
+        placeholder: "",
+        path:window.location.pathname, 
+        avatar:'mm' 
+    });
+    </script>
+
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:franklin559@163.com" target="_blank" rel="noopener" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/FrankLIn559" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.jpg" />
+                </span>
+            
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、什么是前后端分离？"><span class="toc-number">1.</span> <span class="toc-text">一、什么是前后端分离？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、为什么要前后端分离？"><span class="toc-number">2.</span> <span class="toc-text">二、为什么要前后端分离？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-现有开发模式的适用场景"><span class="toc-number">2.0.1.</span> <span class="toc-text">2.1 现有开发模式的适用场景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-前后端职责不清"><span class="toc-number">2.0.2.</span> <span class="toc-text">2.2 前后端职责不清</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-开发效率问题"><span class="toc-number">2.0.3.</span> <span class="toc-text">2.3 开发效率问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-对前端发挥的局限"><span class="toc-number">2.0.4.</span> <span class="toc-text">2.4 对前端发挥的局限</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、怎么做前后端分离？"><span class="toc-number">3.</span> <span class="toc-text">三、怎么做前后端分离？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-基于NodeJS“全栈”式开发"><span class="toc-number">3.0.1.</span> <span class="toc-text">3.1 基于NodeJS“全栈”式开发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-为什么要增加一层-Node-js？"><span class="toc-number">3.0.2.</span> <span class="toc-text">3.2 为什么要增加一层 Node.js？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-性能问题"><span class="toc-number">3.0.3.</span> <span class="toc-text">3.3 性能问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-前端的工作量是否增加了？"><span class="toc-number">3.0.4.</span> <span class="toc-text">3.4 前端的工作量是否增加了？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-增加-Node-js-层带来的风险怎么控制？"><span class="toc-number">3.0.5.</span> <span class="toc-text">3.5 增加 Node.js 层带来的风险怎么控制？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-Node-js-什么都能做，为什么还要-Java？"><span class="toc-number">3.0.6.</span> <span class="toc-text">3.6 Node.js 什么都能做，为什么还要 Java？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、淘宝基于-Node-js-的前后端分离"><span class="toc-number">4.</span> <span class="toc-text">四、淘宝基于 Node.js 的前后端分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、我们还需要要做什么？"><span class="toc-number">5.</span> <span class="toc-text">五、我们还需要要做什么？</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 10
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/04</span><a class="archive-post-title" href= "/2020/08/04/" >开发速查表</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/19</span><a class="archive-post-title" href= "/2020/06/19/" >Hello World</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span><a class="archive-post-title" href= "/2020/05/11/" >什么是前端？</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span><a class="archive-post-title" href= "/2019/11/04/" >揭秘 HTML5 和 CSS3</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span><a class="archive-post-title" href= "/2019/11/02/" >移动端开发小记 - Flexbox</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span><a class="archive-post-title" href= "/2019/11/01/" >前后端分离的思考与实践</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/09</span><a class="archive-post-title" href= "/2019/06/09/" >为什么你要写博客</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/06</span><a class="archive-post-title" href= "/2019/06/06/" >如何搭建一个个人博客</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/02</span><a class="archive-post-title" href= "/2019/06/02/" >系统设计基础</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/01</span><a class="archive-post-title" href= "/2019/06/01/" >Java面试题</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Life"><span class="iconfont-archer">&#xe606;</span>Life</span>
+    
+        <span class="sidebar-tag-name" data-tags="Tech"><span class="iconfont-archer">&#xe606;</span>Tech</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "Lin"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
