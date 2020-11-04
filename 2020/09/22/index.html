@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="Lin">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Lin">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="Linjw">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>React单页面人员管理系统 · Linjw&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.png" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Linjw&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">React单页面人员管理系统</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Linjw's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            React单页面人员管理系统
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Tech">Tech</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">7k</span>阅读时长: <span class="post-count reading-time">36 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2020/09/22</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>本文实现了一个单页面人员管理系统的前台应用。构建React组件的时候，使用了es6的语法，最终用webpack打包<br>包括以下功能：<br>1.人员基本信息列表；<br>2.人员的录入及删除；<br>3.人员详细信息的查看；<br>4.人员信息的编辑；<br>5.根据人员身份进行筛选；<br>6.根据人员某些属性进行排序；<br>7.根据人姓名、年龄、身份、性别等关键字进行人员搜索</p>
+<h2 id="第一步：划分UI-Component"><a href="#第一步：划分UI-Component" class="headerlink" title="第一步：划分UI Component"></a>第一步：划分UI Component</h2><pre><code>`ManageSystem （管理模块的最外层容器，容纳整个应用）`
+        `StaffHeader （该模块接收用户操作的输入，包括关键字搜索输入、筛选条件以及排序方式）`
+        `StaffItemPanel （该模块用于展示所有基于用户操作(关键字搜索、筛选、排序)结果的条目）`
+            StaffItem  （该模块用于展示一条人员的基本信息，包括删除和详情操作的按钮；）
+           StaffItem
+            StaffItem...  
+       `StaffFooter （该模块用于新人员的添加）`
+       `StaffDetail (点击详情后展示)`</code></pre><h2 id="第二步：构建静态版的React应用"><a href="#第二步：构建静态版的React应用" class="headerlink" title="第二步：构建静态版的React应用"></a>第二步：构建静态版的React应用</h2><p>在第一步中我们已经划分了各个组件，也说明了各个组件的职责。接下来我们分步完成我们的应用，首先我们做一个静态版的React，只用于render UI组件，但并不包含任何交互。每个组件中都仅仅只包含一个render()方法。</p>
+<p>静态版的应用，数据由父组件通过props属性向下传递，state属性是用不到的。state仅仅为动态交互而生。</p>
+<h3 id="StaffHeader"><a href="#StaffHeader" class="headerlink" title="StaffHeader"></a>StaffHeader</h3><p>该组件主要用于提供搜索框，人员筛选下拉框以及排列方式下拉框</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;;</span><br><span class="line">export default class StaffHeader extends React.Component&#123;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">        return (</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">              &lt;h3 style=&#123;&#123;&apos;text-align&apos;:&apos;center&apos;&#125;&#125;&gt;人员管理系统&lt;/h3&gt;</span><br><span class="line">              &lt;table className=&quot;optHeader&quot;&gt;</span><br><span class="line">                &lt;tbody&gt;</span><br><span class="line">                  &lt;tr&gt;</span><br><span class="line">                    &lt;td className=&quot;headerTd&quot;&gt;&lt;input type=&apos;text&apos; placeholder=&apos;Search...&apos; /&gt;&lt;/td&gt;</span><br><span class="line">                    &lt;td className=&quot;headerTd&quot;&gt;</span><br><span class="line">                        &lt;label for=&apos;idSelect&apos;&gt;人员筛选&lt;/label&gt;</span><br><span class="line">                        &lt;select id=&apos;idSelect&apos;&gt;</span><br><span class="line">                            &lt;option value=&apos;0&apos;&gt;全部&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;1&apos;&gt;项目经理&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;2&apos;&gt;组长&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;3&apos;&gt;成员&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;4&apos;&gt;实习&lt;/option&gt;</span><br><span class="line">                        &lt;/select&gt;</span><br><span class="line">                    &lt;/td&gt;</span><br><span class="line">                    &lt;td&gt;</span><br><span class="line">                        &lt;label for=&apos;orderSelect&apos;&gt;排列方式&lt;/label&gt;</span><br><span class="line">                        &lt;select id=&apos;orderSelect&apos;&gt;</span><br><span class="line">                            &lt;option value=&apos;0&apos;&gt;身份&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;1&apos;&gt;年龄升&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;2&apos;&gt;年龄降&lt;/option&gt;</span><br><span class="line">                        &lt;/select&gt;</span><br><span class="line">                    &lt;/td&gt;</span><br><span class="line">                  &lt;/tr&gt;</span><br><span class="line">                &lt;/tbody&gt;</span><br><span class="line">              &lt;/table&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="StaffItem"><a href="#StaffItem" class="headerlink" title="StaffItem"></a>StaffItem</h3><p>StaffItem是每个具体人员的基本信息组件，用于展示人员的基本信息并接收用户的删除和点击详情的操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;;</span><br><span class="line">export default class StaffItem extends React.Component&#123;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">        return (</span><br><span class="line">              &lt;tr style=&#123;&#123;&apos;cursor&apos;: &apos;pointer&apos;&#125;&#125;&gt;</span><br><span class="line">                &lt;td className=&apos;itemTd&apos;&gt;&#123;this.props.item.info.name&#125;&lt;/td&gt;</span><br><span class="line">                &lt;td className=&apos;itemTd&apos;&gt;&#123;this.props.item.info.age&#125;&lt;/td&gt;</span><br><span class="line">                &lt;td className=&apos;itemTd&apos;&gt;&#123;this.props.item.info.id&#125;&lt;/td&gt;</span><br><span class="line">                &lt;td className=&apos;itemTd&apos;&gt;&#123;this.props.item.info.sex&#125;&lt;/td&gt;</span><br><span class="line">                &lt;td className=&apos;itemTd&apos;&gt;</span><br><span class="line">                    &lt;a className=&quot;itemBtn&quot;&gt;删除&lt;/a&gt;</span><br><span class="line">                    &lt;a className=&quot;itemBtn&quot;&gt;详情&lt;/a&gt;</span><br><span class="line">                &lt;/td&gt;</span><br><span class="line">              &lt;/tr&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="StaffItemPanel"><a href="#StaffItemPanel" class="headerlink" title="StaffItemPanel"></a>StaffItemPanel</h3><p>该组件仅用于展示由父组件传入的各个人员条目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;;</span><br><span class="line">import StaffItem from &apos;./StaffItem.js&apos;;</span><br><span class="line">export default class StaffItemPanel extends React.Component&#123;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">        let items = [];</span><br><span class="line"></span><br><span class="line">        if(this.props.items.length == 0) &#123;</span><br><span class="line">            items.push(&lt;tr&gt;&lt;th colSpan=&quot;5&quot; className=&quot;tempEmpty&quot;&gt;暂无用户&lt;/th&gt;&lt;/tr&gt;);</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            this.props.items.forEach(item =&gt; &#123;</span><br><span class="line">                items.push(&lt;StaffItem key=&#123;item.key&#125; item=&#123;item&#125;/&gt;);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return (</span><br><span class="line">          &lt;table className=&apos;itemPanel&apos;&gt;</span><br><span class="line">            &lt;thead&gt;</span><br><span class="line">                &lt;th className=&apos;itemTd&apos;&gt;姓名&lt;/th&gt;</span><br><span class="line">                &lt;th className=&apos;itemTd&apos;&gt;年龄&lt;/th&gt;</span><br><span class="line">                &lt;th className=&apos;itemTd&apos;&gt;身份&lt;/th&gt;</span><br><span class="line">                &lt;th className=&apos;itemTd&apos;&gt;性别&lt;/th&gt;</span><br><span class="line">                &lt;th className=&apos;itemTd&apos;&gt;操作&lt;/th&gt;</span><br><span class="line">            &lt;/thead&gt;</span><br><span class="line">            &lt;tbody&gt;&#123;items&#125;&lt;/tbody&gt;</span><br><span class="line">          &lt;/table&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="StaffFooter"><a href="#StaffFooter" class="headerlink" title="StaffFooter"></a>StaffFooter</h3><p>StaffFooter组件的功能是添加新人员</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;;</span><br><span class="line">export default class StaffFooter extends React.Component&#123;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">        return (</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">            &lt;h4 style=&#123;&#123;&apos;text-align&apos;:&apos;center&apos;&#125;&#125;&gt;人员新增&lt;/h4&gt;</span><br><span class="line">            &lt;hr/&gt;</span><br><span class="line">            &lt;form ref=&apos;addForm&apos; className=&quot;addForm&quot;&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddName&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;姓名&lt;/label&gt;</span><br><span class="line">                  &lt;input ref=&apos;addName&apos; id=&apos;staffAddName&apos; type=&apos;text&apos; placeholder=&apos;Your Name&apos;/&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddAge&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;年龄&lt;/label&gt;</span><br><span class="line">                  &lt;input ref=&apos;addAge&apos; id=&apos;staffAddAge&apos; type=&apos;text&apos; placeholder=&apos;Your Age(0-120)&apos;/&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddSex&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;性别&lt;/label&gt;</span><br><span class="line">                  &lt;select ref=&apos;addSex&apos; id=&apos;staffAddSex&apos;&gt;</span><br><span class="line">                    &lt;option value=&apos;男&apos;&gt;男&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;女&apos;&gt;女&lt;/option&gt;</span><br><span class="line">                  &lt;/select&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddId&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;身份&lt;/label&gt;</span><br><span class="line">                  &lt;select ref=&apos;addId&apos; id=&apos;staffAddId&apos;&gt;</span><br><span class="line">                    &lt;option value=&apos;经理&apos;&gt;经理&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;组长&apos;&gt;组长&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;成员&apos;&gt;成员&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;实习&apos;&gt;实习&lt;/option&gt;</span><br><span class="line">                  &lt;/select&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddDescrip&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;个人描述&lt;/label&gt;</span><br><span class="line">                  &lt;textarea ref=&apos;addDescrip&apos; id=&apos;staffAddDescrip&apos; type=&apos;text&apos;&gt;&lt;/textarea&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;p ref=&quot;tips&quot; className=&apos;tips&apos; &gt;提交成功&lt;/p&gt;</span><br><span class="line">                &lt;p ref=&apos;tipsUnDone&apos; className=&apos;tips&apos;&gt;请录入完整的人员信息&lt;/p&gt;</span><br><span class="line">                &lt;p ref=&apos;tipsUnAge&apos; className=&apos;tips&apos;&gt;请录入正确的年龄&lt;/p&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;button&gt;提交&lt;/button&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/form&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="StaffDetail"><a href="#StaffDetail" class="headerlink" title="StaffDetail"></a>StaffDetail</h3><p>该组件通常情况下是不显示的，当用户点击某条目的详情的时候，该组件将以一种动画效果弹出。方法就是在css中将该组件的z-index设置为一个很大的值，比如100，然后通过逐渐改变背景透明度的动画实现浮现的效果。目前我们只需要做一个静态版的React，尚未实现用户点击操作的交互，所以这里只需要创建以下js文件，并在css中将.overLay的display设置为none就可以了，源码中的css文件已经做好了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import React from &apos;react&apos;;</span><br><span class="line">export default class StaffDetail extends React.Component&#123;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">      let staffDetail = this.props.staffDetail;  </span><br><span class="line">      if(!staffDetail)</span><br><span class="line">        return null;</span><br><span class="line"></span><br><span class="line">      return (</span><br><span class="line">          &lt;div className=&quot;overLay&quot;&gt;</span><br><span class="line">            &lt;h4 style=&#123;&#123;&apos;text-align&apos;:&apos;center&apos;&#125;&#125;&gt;点击&apos;完成&apos;保存修改,点击&apos;关闭&apos;放弃未保存修改并退出.&lt;/h4&gt;</span><br><span class="line">            &lt;hr/&gt;</span><br><span class="line">            &lt;table ref=&quot;editTabel&quot;&gt;</span><br><span class="line">              &lt;tbody&gt;</span><br><span class="line">                &lt;tr&gt;</span><br><span class="line">                  &lt;th&gt;姓名&lt;/th&gt;</span><br><span class="line">                  &lt;td&gt;&lt;input id=&apos;staffEditName&apos; type=&quot;text&quot; defaultValue=&#123;staffDetail.info.name&#125;&gt;&lt;/input&gt;&lt;/td&gt;</span><br><span class="line">                &lt;/tr&gt;</span><br><span class="line">                &lt;tr&gt;</span><br><span class="line">                  &lt;th&gt;年龄&lt;/th&gt;</span><br><span class="line">                  &lt;td&gt;&lt;input id=&apos;staffEditAge&apos; type=&quot;text&quot; defaultValue=&#123;staffDetail.info.age&#125;&gt;&lt;/input&gt;&lt;/td&gt;</span><br><span class="line">                &lt;/tr&gt;</span><br><span class="line">                &lt;tr&gt;</span><br><span class="line">                  &lt;th&gt;性别&lt;/th&gt;</span><br><span class="line">                  &lt;td&gt;</span><br><span class="line">                    &lt;select ref=&apos;selSex&apos; id=&apos;staffEditSex&apos;&gt;</span><br><span class="line">                      &lt;option value=&quot;男&quot;&gt;男&lt;/option&gt;</span><br><span class="line">                      &lt;option value=&quot;女&quot;&gt;女&lt;/option&gt;</span><br><span class="line">                    &lt;/select&gt;</span><br><span class="line">                  &lt;/td&gt;</span><br><span class="line">                &lt;/tr&gt;</span><br><span class="line">                &lt;tr&gt;</span><br><span class="line">                  &lt;th&gt;身份&lt;/th&gt;</span><br><span class="line">                  &lt;td&gt;</span><br><span class="line">                    &lt;select ref=&quot;selId&quot; id=&apos;staffEditId&apos;&gt;</span><br><span class="line">                      &lt;option value=&quot;经理&quot;&gt;经理&lt;/option&gt;</span><br><span class="line">                      &lt;option value=&quot;组长&quot;&gt;组长&lt;/option&gt;</span><br><span class="line">                      &lt;option value=&quot;成员&quot;&gt;成员&lt;/option&gt;</span><br><span class="line">                      &lt;option value=&quot;实习&quot;&gt;实习&lt;/option&gt;</span><br><span class="line">                    &lt;/select&gt;</span><br><span class="line">                  &lt;/td&gt;</span><br><span class="line">                &lt;/tr&gt;</span><br><span class="line">                &lt;tr&gt;</span><br><span class="line">                  &lt;th&gt;个人描述&lt;/th&gt;</span><br><span class="line">                  &lt;td&gt;&lt;textarea id=&apos;staffEditDescrip&apos; type=&quot;text&quot; defaultValue=&#123;staffDetail.info.descrip&#125;&gt;		 &lt;/textarea&gt;&lt;/td&gt;</span><br><span class="line">                &lt;/tr&gt;</span><br><span class="line">              &lt;/tbody&gt;</span><br><span class="line">            &lt;/table&gt;</span><br><span class="line">            &lt;p ref=&apos;Dtips&apos; className=&apos;tips&apos;&gt;修改成功&lt;/p&gt;</span><br><span class="line">            &lt;p ref=&apos;DtipsUnDone&apos; className=&apos;tips&apos;&gt;请录入完整的人员信息&lt;/p&gt;</span><br><span class="line">            &lt;p ref=&apos;DtipsUnAge&apos; className=&apos;tips&apos;&gt;请录入正确的年龄&lt;/p&gt;</span><br><span class="line">            &lt;button&gt;完成&lt;/button&gt;</span><br><span class="line">            &lt;button&gt;关闭&lt;/button&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="ManageSystem"><a href="#ManageSystem" class="headerlink" title="ManageSystem"></a>ManageSystem</h3><p>这是最外层的容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;;</span><br><span class="line">import StaffHeader from &apos;./StaffHeader.js&apos;;</span><br><span class="line">import StaffItemPanel from &apos;./StaffItemPanel.js&apos;;</span><br><span class="line">import StaffFooter from &apos;./StaffFooter.js&apos;;</span><br><span class="line">import StaffDetail from &apos;./StaffDetail.js&apos;;</span><br><span class="line"></span><br><span class="line">var rawData = [&#123; info: &#123;descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;男&apos;, age: 20, name: &apos;张三&apos;, id: &apos;主任&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;女&apos;, age: 21, name: &apos;赵静&apos;, id: &apos;学生&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;女&apos;, age: 22, name: &apos;王二麻&apos;, id: &apos;学生&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;女&apos;, age: 24, name: &apos;李晓婷&apos;, id: &apos;实习&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;男&apos;, age: 23, name: &apos;张春田&apos;, id: &apos;实习&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;男&apos;, age: 22, name: &apos;刘建国&apos;, id: &apos;学生&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;男&apos;, age: 24, name: &apos;张八&apos;, id: &apos;主任&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的狗。&apos;, sex: &apos;男&apos;, age: 35, name: &apos;李四&apos;, id: &apos;老师&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的猪。&apos;, sex: &apos;男&apos;, age: 42, name: &apos;王五&apos;, id: &apos;学生&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的牛。&apos;, sex: &apos;男&apos;, age: 50, name: &apos;赵六&apos;, id: &apos;实习&apos;&#125;&#125;,</span><br><span class="line">               &#123; info: &#123;descrip:&apos;我是一匹来自远方的马。&apos;, sex: &apos;男&apos;, age: 60, name: &apos;孙七&apos;, id: &apos;实习&apos;&#125;&#125;];</span><br><span class="line"></span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">      return (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">          &lt;StaffHeader/&gt;</span><br><span class="line">          &lt;StaffItemPanel items=&#123;rawData&#125; /&gt;</span><br><span class="line">          &lt;StaffFooter/&gt;</span><br><span class="line">          &lt;StaffDetail/&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">React.render(&lt;App /&gt;, document.getElementById(&apos;app&apos;));</span><br></pre></td></tr></table></figure>
+
+<p>以上代码中<em>rawData</em>是演示数据，生产中的数据应该从数据库获得，这里为了简便，直接生成了11条演示用的数据。</p>
+<h2 id="第三步：编译并打包"><a href="#第三步：编译并打包" class="headerlink" title="第三步：编译并打包"></a>第三步：编译并打包</h2><p>在第二步中，我们已经生成了各个component以及subcomponent。简单地说，上文中我们编写React Component的过程中，使用了es6和JSX的语法，但这些目前是不能被浏览器直接支持的。所以在使用之前，要先经过’编译’，这个过程我们是使用Babel完成的。</p>
+<h3 id="安装依赖项"><a href="#安装依赖项" class="headerlink" title="安装依赖项"></a>安装依赖项</h3><p>在这里，首先执行以下命令，安装开发依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>该命令会自动读取当前目录下的package.json文件，并自行安装其中的依赖项。文件内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;StaffManage&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;description&quot;: &quot;&quot;,</span><br><span class="line">  &quot;main&quot;: &quot;&quot;,</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;start&quot;: &quot;webpack&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;author&quot;: &quot;WYH&quot;,</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;,</span><br><span class="line">  &quot;devDependencies&quot;: &#123;</span><br><span class="line">    &quot;babel-core&quot;: &quot;^6.14.0&quot;,</span><br><span class="line">    &quot;babel-loader&quot;: &quot;^6.2.5&quot;,</span><br><span class="line">    &quot;babel-preset-es2015&quot;: &quot;^6.14.0&quot;,</span><br><span class="line">    &quot;babel-preset-react&quot;: &quot;^6.11.1&quot;,</span><br><span class="line">    &quot;webpack&quot;: &quot;^1.13.2&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译打包"><a href="#编译打包" class="headerlink" title="编译打包"></a>编译打包</h3><p>安装开发依赖项后，接下来就是使用webpack打包，webpack的loader在解析文件的时候会自动使用babel对文件进行编译。</p>
+<p>配置文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">    entry: __dirname + &apos;/src/ManageSystem.js&apos;,</span><br><span class="line">    output: &#123;</span><br><span class="line">        path: __dirname + &apos;/build&apos;,</span><br><span class="line">        filename: &quot;bundle.js&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    externals: &#123;</span><br><span class="line">        &apos;react&apos;: &apos;React&apos;</span><br><span class="line">    &#125;,</span><br><span class="line">    devtool: &apos;eval-source-map&apos;,  //生成source file</span><br><span class="line">    module: &#123;</span><br><span class="line">        loaders: [</span><br><span class="line">          &#123;</span><br><span class="line">            test: /\.js$/,</span><br><span class="line">            exclude: /node_modules/,</span><br><span class="line">            loader: &apos;babel&apos;,</span><br><span class="line">            query: &#123;</span><br><span class="line">              presets: [&apos;es2015&apos;, &apos;react&apos;]</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>将第二步中的所有组件都放到当前目录下的src目录中，目录结构可以参考源代码，然后执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm start</span><br></pre></td></tr></table></figure>
+
+<p>该命令也是在package.json中指定的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;scripts&quot;: &#123;</span><br><span class="line">  &quot;start&quot;: &quot;webpack&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好了，在build目录下应该已经生成bundle.js文件，这就是我们打包好的文件，我们只需要在html中引用它就行了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;zh-CN&quot;&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;人员管理&lt;/title&gt;</span><br><span class="line">    &lt;link href=&quot;build/style.css&quot; rel=&quot;stylesheet&quot; /&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">      &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">      &lt;script src=&quot;http://cdn.bootcss.com/react/0.13.3/react.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">      &lt;script src=&quot;build/bundle.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>打开index.html，静态版的React已经生成了，只是还没有动态交互。大框架已经建立，接下来就是让它动起来</p>
+<h2 id="第四步：添加STAFF类"><a href="#第四步：添加STAFF类" class="headerlink" title="第四步：添加STAFF类"></a>第四步：添加STAFF类</h2><p>本文应用涉及的功能有排序，筛选、新增、删除、修改以及关键字搜索等。为了让React集中精力完成view层的事情，我们这里新建一个STAFF类来完成业务逻辑。</p>
+<p>新建一个STAFF.js文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">class staffItem &#123;</span><br><span class="line">    constructor(item)&#123;</span><br><span class="line">        this.info = &#123;&#125;;</span><br><span class="line">        this.info.name = item.name;</span><br><span class="line">        this.info.age = item.age || 0;</span><br><span class="line">        this.info.sex = item.sex;</span><br><span class="line">        this.info.id = item.id;</span><br><span class="line">        this.info.descrip = item.descrip || &apos;&apos;;</span><br><span class="line">        this.key = ++staffItem.key;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">staffItem.key = 0;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export default class STAFF &#123;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">        this.allStaff = [</span><br><span class="line">            new staffItem(STAFF.rawData[0]),</span><br><span class="line">            new staffItem(STAFF.rawData[1]),</span><br><span class="line">            new staffItem(STAFF.rawData[2]),</span><br><span class="line">            new staffItem(STAFF.rawData[3]),</span><br><span class="line">            new staffItem(STAFF.rawData[4]),</span><br><span class="line">            new staffItem(STAFF.rawData[5]),</span><br><span class="line">            new staffItem(STAFF.rawData[6]),</span><br><span class="line">            new staffItem(STAFF.rawData[7]),</span><br><span class="line">            new staffItem(STAFF.rawData[8]),</span><br><span class="line">            new staffItem(STAFF.rawData[9]),</span><br><span class="line">            new staffItem(STAFF.rawData[10])</span><br><span class="line">        ];</span><br><span class="line">        this.staff = this.allStaff;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">STAFF.rawData = [&#123; descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;男&apos;, age: 20, name: &apos;张三&apos;, id: &apos;主任&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;女&apos;, age: 21, name: &apos;赵静&apos;, id: &apos;学生&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;女&apos;, age: 22, name: &apos;王二麻&apos;, id: &apos;学生&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;女&apos;, age: 24, name: &apos;李晓婷&apos;, id: &apos;实习&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;男&apos;, age: 23, name: &apos;张春田&apos;, id: &apos;实习&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;男&apos;, age: 22, name: &apos;刘建国&apos;, id: &apos;学生&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的狼。&apos;, sex: &apos;男&apos;, age: 24, name: &apos;张八&apos;, id: &apos;主任&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的狗。&apos;, sex: &apos;男&apos;, age: 35, name: &apos;李四&apos;, id: &apos;老师&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的猪。&apos;, sex: &apos;男&apos;, age: 42, name: &apos;王五&apos;, id: &apos;学生&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的牛。&apos;, sex: &apos;男&apos;, age: 50, name: &apos;赵六&apos;, id: &apos;实习&apos;&#125;,</span><br><span class="line">                 &#123; descrip:&apos;我是一匹来自远方的马。&apos;, sex: &apos;男&apos;, age: 60, name: &apos;孙七&apos;, id: &apos;实习&apos;&#125;];</span><br></pre></td></tr></table></figure>
+
+<p>在STAFF.js中我们实际上创建了2个类，为了实现更好的’封装性’，我们将每一个人员条目单独作为一个staffItem类，该对象中包含了该人员的所有信息（在本应用中包含姓名、年龄、性别、身份、个人描述等）实践生产生活中我们可以加入类似入职时间，福利薪酬，个人经历等信息。另外还有一个key值，它是一个类变量，这个值是唯一标识该staffItem用的。</p>
+<p>在第二步，我们在ManageSystem.js中模拟了一些数据，现在我们也把它搬到STAFF中。毕竟React不是存数据用的。</p>
+<p>在STAFF类的构造函数中，创建了2个实例变量，一个是allStaff，其中存储所有staffItem；一个是staff，它是最终需要给React展示的数据，是经过用户筛选操作、关键字搜索操作之后得到的人员数组。这么设计变量也是为了后面的筛选、搜索等功能。在这里我们尚无这些操作的逻辑，直接将allStaff赋给staff即可。</p>
+<p>接下来在ManageSystem中引入Staff.js，并初始化state：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;;</span><br><span class="line">import StaffHeader from &apos;./StaffHeader.js&apos;;</span><br><span class="line">import StaffItemPanel from &apos;./StaffItemPanel.js&apos;;</span><br><span class="line">import StaffFooter from &apos;./StaffFooter.js&apos;;</span><br><span class="line">import StaffDetail from &apos;./StaffDetail.js&apos;;</span><br><span class="line"></span><br><span class="line">import STAFF from &apos;./STAFF.js&apos;;</span><br><span class="line"></span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">        super();</span><br><span class="line">        this.state = &#123;</span><br><span class="line">            staff : new Staff</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">      return (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">          &lt;StaffHeader/&gt;</span><br><span class="line">          &lt;StaffItemPanel items=&#123;this.state.staff.staff&#125; /&gt;</span><br><span class="line">          &lt;StaffFooter/&gt;</span><br><span class="line">          &lt;StaffDetail/&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">React.render(&lt;App /&gt;, document.getElementById(&apos;app&apos;));</span><br></pre></td></tr></table></figure>
+
+<p>在构造函数中，new了一个STAFF类，然后将this.state.staff.staff传入<code>&lt;StaffItemPanel/&gt;</code>的items属性。</p>
+<p>然后重新编译打包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm start</span><br></pre></td></tr></table></figure>
+
+<h2 id="第五步：完成新增人员功能"><a href="#第五步：完成新增人员功能" class="headerlink" title="第五步：完成新增人员功能"></a>第五步：完成新增人员功能</h2><h3 id="关于state"><a href="#关于state" class="headerlink" title="关于state"></a>关于state</h3><p>state是为交互而生的。React是自上而下的单向数据流，state通常由上层组件拥有并控制，state的变化将触发建立在该state上的一系列自上而下的组件更新。注意，组件只能update它自己的state，如果下层组件的操作希望改变应用的状态，形成一个inverse data flow–反向数据流，我们需要从上层组件传入一个回调函数</p>
+<h3 id="实现人员新增功能"><a href="#实现人员新增功能" class="headerlink" title="实现人员新增功能"></a>实现人员新增功能</h3><p>重新打开StaffFooter.js，加入部分代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;;</span><br><span class="line">export default class StaffFooter extends React.Component&#123;</span><br><span class="line"></span><br><span class="line">    handlerAddClick(evt)&#123;</span><br><span class="line">        evt.preventDefault();</span><br><span class="line">        let item = &#123;&#125;;</span><br><span class="line">        let addForm = React.findDOMNode(this.refs.addForm);</span><br><span class="line">        let sex = addForm.querySelector(&apos;#staffAddSex&apos;);</span><br><span class="line">        let id = addForm.querySelector(&apos;#staffAddId&apos;);</span><br><span class="line"></span><br><span class="line">        item.name = addForm.querySelector(&apos;#staffAddName&apos;).value.trim();</span><br><span class="line">        item.age = addForm.querySelector(&apos;#staffAddAge&apos;).value.trim();</span><br><span class="line">        item.descrip = addForm.querySelector(&apos;#staffAddDescrip&apos;).value.trim();</span><br><span class="line">        item.sex = sex.options[sex.selectedIndex].value;</span><br><span class="line">        item.id = id.options[id.selectedIndex].value;</span><br><span class="line"></span><br><span class="line">        /*</span><br><span class="line">         *表单验证</span><br><span class="line">         */</span><br><span class="line">        if(item.name==&apos;&apos; || item.age==&apos;&apos; || item.descrip==&apos;&apos;) &#123;</span><br><span class="line">            let tips = React.findDOMNode(this.refs.tipsUnDone);</span><br><span class="line">            tips.style.display = &apos;block&apos;;</span><br><span class="line">            setTimeout(function()&#123;</span><br><span class="line">                tips.style.display = &apos;none&apos;;</span><br><span class="line">            &#125;, 1000);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        //非负整数</span><br><span class="line">        let numReg = /^\d+$/;</span><br><span class="line">        if(!numReg.test(item.age) || parseInt(item.age)&gt;150) &#123;</span><br><span class="line">            let tips = React.findDOMNode(this.refs.tipsUnAge);</span><br><span class="line">            tips.style.display = &apos;block&apos;;</span><br><span class="line">            setTimeout(function()&#123;</span><br><span class="line">                tips.style.display = &apos;none&apos;;</span><br><span class="line">            &#125;, 1000);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        this.props.addStaffItem(item);</span><br><span class="line">        addForm.reset();</span><br><span class="line"></span><br><span class="line">        //此处应在返回添加成功信息后确认</span><br><span class="line">        let tips = React.findDOMNode(this.refs.tips);</span><br><span class="line">        tips.style.display = &apos;block&apos;;</span><br><span class="line">        setTimeout(function()&#123;</span><br><span class="line">            tips.style.display = &apos;none&apos;;</span><br><span class="line">        &#125;, 1000);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">        return (</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">            &lt;h4 style=&#123;&#123;&apos;text-align&apos;:&apos;center&apos;&#125;&#125;&gt;人员新增&lt;/h4&gt;</span><br><span class="line">            &lt;hr/&gt;</span><br><span class="line">            &lt;form ref=&apos;addForm&apos; className=&quot;addForm&quot;&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddName&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;姓名&lt;/label&gt;</span><br><span class="line">                  &lt;input ref=&apos;addName&apos; id=&apos;staffAddName&apos; type=&apos;text&apos; placeholder=&apos;Your Name&apos;/&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddAge&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;年龄&lt;/label&gt;</span><br><span class="line">                  &lt;input ref=&apos;addAge&apos; id=&apos;staffAddAge&apos; type=&apos;text&apos; placeholder=&apos;Your Age(0-150)&apos;/&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddSex&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;性别&lt;/label&gt;</span><br><span class="line">                  &lt;select ref=&apos;addSex&apos; id=&apos;staffAddSex&apos;&gt;</span><br><span class="line">                    &lt;option value=&apos;男&apos;&gt;男&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;女&apos;&gt;女&lt;/option&gt;</span><br><span class="line">                  &lt;/select&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddId&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;身份&lt;/label&gt;</span><br><span class="line">                  &lt;select ref=&apos;addId&apos; id=&apos;staffAddId&apos;&gt;</span><br><span class="line">                    &lt;option value=&apos;主任&apos;&gt;主任&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;老师&apos;&gt;老师&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;学生&apos;&gt;学生&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;实习&apos;&gt;实习&lt;/option&gt;</span><br><span class="line">                  &lt;/select&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddDescrip&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;个人描述&lt;/label&gt;</span><br><span class="line">                  &lt;textarea ref=&apos;addDescrip&apos; id=&apos;staffAddDescrip&apos; type=&apos;text&apos;&gt;&lt;/textarea&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;p ref=&quot;tips&quot; className=&apos;tips&apos; &gt;提交成功&lt;/p&gt;</span><br><span class="line">                &lt;p ref=&apos;tipsUnDone&apos; className=&apos;tips&apos;&gt;请录入完整的人员信息&lt;/p&gt;</span><br><span class="line">                &lt;p ref=&apos;tipsUnAge&apos; className=&apos;tips&apos;&gt;请录入正确的年龄&lt;/p&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;button onClick=&#123;this.handlerAddClick.bind(this)&#125;&gt;提交&lt;/button&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/form&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在提交的按钮上绑定了点击事件。点击提交按钮后，执行以下函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">handlerAddClick(evt)&#123;</span><br><span class="line">    evt.preventDefault();</span><br><span class="line">    let item = &#123;&#125;;</span><br><span class="line">    let addForm = React.findDOMNode(this.refs.addForm);</span><br><span class="line">    let sex = addForm.querySelector(&apos;#staffAddSex&apos;);</span><br><span class="line">    let id = addForm.querySelector(&apos;#staffAddId&apos;);</span><br><span class="line"></span><br><span class="line">    item.name = addForm.querySelector(&apos;#staffAddName&apos;).value.trim();</span><br><span class="line">    item.age = addForm.querySelector(&apos;#staffAddAge&apos;).value.trim();</span><br><span class="line">    item.descrip = addForm.querySelector(&apos;#staffAddDescrip&apos;).value.trim();</span><br><span class="line">    item.sex = sex.options[sex.selectedIndex].value;</span><br><span class="line">    item.id = id.options[id.selectedIndex].value;</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">     *表单验证</span><br><span class="line">     */</span><br><span class="line">    if(item.name==&apos;&apos; || item.age==&apos;&apos; || item.descrip==&apos;&apos;) &#123;</span><br><span class="line">        let tips = React.findDOMNode(this.refs.tipsUnDone);</span><br><span class="line">        tips.style.display = &apos;block&apos;;</span><br><span class="line">        setTimeout(function()&#123;</span><br><span class="line">            tips.style.display = &apos;none&apos;;</span><br><span class="line">        &#125;, 1000);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    //非负整数</span><br><span class="line">    let numReg = /^\d+$/;</span><br><span class="line">    if(!numReg.test(item.age) || parseInt(item.age)&gt;150) &#123;</span><br><span class="line">        let tips = React.findDOMNode(this.refs.tipsUnAge);</span><br><span class="line">        tips.style.display = &apos;block&apos;;</span><br><span class="line">        setTimeout(function()&#123;</span><br><span class="line">            tips.style.display = &apos;none&apos;;</span><br><span class="line">        &#125;, 1000);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    this.props.addStaffItem(item);</span><br><span class="line">    addForm.reset();</span><br><span class="line"></span><br><span class="line">    //此处应在返回添加成功信息后确认</span><br><span class="line">    let tips = React.findDOMNode(this.refs.tips);</span><br><span class="line">    tips.style.display = &apos;block&apos;;</span><br><span class="line">    setTimeout(function()&#123;</span><br><span class="line">        tips.style.display = &apos;none&apos;;</span><br><span class="line">    &#125;, 1000);</span><br><span class="line">&#125;</span><br><span class="line"> render()&#123;</span><br><span class="line">        return (</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">            &lt;h4 style=&#123;&#123;&apos;text-align&apos;:&apos;center&apos;&#125;&#125;&gt;人员新增&lt;/h4&gt;</span><br><span class="line">            &lt;hr/&gt;</span><br><span class="line">            &lt;form ref=&apos;addForm&apos; className=&quot;addForm&quot;&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddName&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;姓名&lt;/label&gt;</span><br><span class="line">                  &lt;input ref=&apos;addName&apos; id=&apos;staffAddName&apos; type=&apos;text&apos; placeholder=&apos;Your Name&apos;/&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddAge&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;年龄&lt;/label&gt;</span><br><span class="line">                  &lt;input ref=&apos;addAge&apos; id=&apos;staffAddAge&apos; type=&apos;text&apos; placeholder=&apos;Your Age(0-150)&apos;/&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddSex&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;性别&lt;/label&gt;</span><br><span class="line">                  &lt;select ref=&apos;addSex&apos; id=&apos;staffAddSex&apos;&gt;</span><br><span class="line">                    &lt;option value=&apos;男&apos;&gt;男&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;女&apos;&gt;女&lt;/option&gt;</span><br><span class="line">                  &lt;/select&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddId&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;身份&lt;/label&gt;</span><br><span class="line">                  &lt;select ref=&apos;addId&apos; id=&apos;staffAddId&apos;&gt;</span><br><span class="line">                    &lt;option value=&apos;主任&apos;&gt;主任&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;老师&apos;&gt;老师&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;学生&apos;&gt;学生&lt;/option&gt;</span><br><span class="line">                    &lt;option value=&apos;实习&apos;&gt;实习&lt;/option&gt;</span><br><span class="line">                  &lt;/select&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;label for=&apos;staffAddDescrip&apos; style=&#123;&#123;&apos;display&apos;: &apos;block&apos;&#125;&#125;&gt;个人描述&lt;/label&gt;</span><br><span class="line">                  &lt;textarea ref=&apos;addDescrip&apos; id=&apos;staffAddDescrip&apos; type=&apos;text&apos;&gt;&lt;/textarea&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;p ref=&quot;tips&quot; className=&apos;tips&apos; &gt;提交成功&lt;/p&gt;</span><br><span class="line">                &lt;p ref=&apos;tipsUnDone&apos; className=&apos;tips&apos;&gt;请录入完整的人员信息&lt;/p&gt;</span><br><span class="line">                &lt;p ref=&apos;tipsUnAge&apos; className=&apos;tips&apos;&gt;请录入正确的年龄&lt;/p&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                  &lt;button onClick=&#123;this.handlerAddClick.bind(this)&#125;&gt;提交&lt;/button&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/form&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在提交的按钮上绑定了点击事件。点击提交按钮后，执行以下函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">handlerAddClick(evt)&#123;</span><br><span class="line">    evt.preventDefault();</span><br><span class="line">    let item = &#123;&#125;;</span><br><span class="line">    let addForm = React.findDOMNode(this.refs.addForm);</span><br><span class="line">    let sex = addForm.querySelector(&apos;#staffAddSex&apos;);</span><br><span class="line">    let id = addForm.querySelector(&apos;#staffAddId&apos;);</span><br><span class="line"></span><br><span class="line">    item.name = addForm.querySelector(&apos;#staffAddName&apos;).value.trim();</span><br><span class="line">    item.age = addForm.querySelector(&apos;#staffAddAge&apos;).value.trim();</span><br><span class="line">    item.descrip = addForm.querySelector(&apos;#staffAddDescrip&apos;).value.trim();</span><br><span class="line">    item.sex = sex.options[sex.selectedIndex].value;</span><br><span class="line">    item.id = id.options[id.selectedIndex].value;</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">     *表单验证</span><br><span class="line">     */</span><br><span class="line">    if(item.name==&apos;&apos; || item.age==&apos;&apos; || item.descrip==&apos;&apos;) &#123;</span><br><span class="line">        let tips = React.findDOMNode(this.refs.tipsUnDone);</span><br><span class="line">        tips.style.display = &apos;block&apos;;</span><br><span class="line">        setTimeout(function()&#123;</span><br><span class="line">            tips.style.display = &apos;none&apos;;</span><br><span class="line">        &#125;, 1000);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    //非负整数</span><br><span class="line">    let numReg = /^\d+$/;</span><br><span class="line">    if(!numReg.test(item.age) || parseInt(item.age)&gt;150) &#123;</span><br><span class="line">        let tips = React.findDOMNode(this.refs.tipsUnAge);</span><br><span class="line">        tips.style.display = &apos;block&apos;;</span><br><span class="line">        setTimeout(function()&#123;</span><br><span class="line">            tips.style.display = &apos;none&apos;;</span><br><span class="line">        &#125;, 1000);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    this.props.addStaffItem(item);</span><br><span class="line">    addForm.reset();</span><br><span class="line"></span><br><span class="line">    //此处应在返回添加成功信息后确认</span><br><span class="line">    let tips = React.findDOMNode(this.refs.tips);</span><br><span class="line">    tips.style.display = &apos;block&apos;;</span><br><span class="line">    setTimeout(function()&#123;</span><br><span class="line">        tips.style.display = &apos;none&apos;;</span><br><span class="line">    &#125;, 1000);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们获取并简单处理了表单，特别注意</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.props.addStaffItem(item);</span><br></pre></td></tr></table></figure>
+
+<p>这一行代码，就是调用了ManageSystem通过prop属性传入的回调函数。在ManageSystem中加入相关代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;;</span><br><span class="line">import StaffHeader from &apos;./StaffHeader.js&apos;;</span><br><span class="line">import StaffItemPanel from &apos;./StaffItemPanel.js&apos;;</span><br><span class="line">import StaffFooter from &apos;./StaffFooter.js&apos;;</span><br><span class="line">import StaffDetail from &apos;./StaffDetail.js&apos;;</span><br><span class="line"></span><br><span class="line">import Staff from &apos;./STAFF.js&apos;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">        super();</span><br><span class="line">        this.state = &#123;</span><br><span class="line">            staff : new Staff,</span><br><span class="line">            staffDetail: null</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //增</span><br><span class="line">    addStaffItem(item)&#123;</span><br><span class="line">        this.setState(&#123;</span><br><span class="line">            staff: this.state.staff.addStaffItem(item)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">      return (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">          &lt;StaffHeader/&gt;</span><br><span class="line">          &lt;StaffItemPanel items=&#123;this.state.staff.staff&#125;&#125;/&gt;</span><br><span class="line">          &lt;StaffFooter addStaffItem=&#123;this.addStaffItem.bind(this)&#125;/&gt;</span><br><span class="line">          &lt;StaffDetail/&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">React.render(&lt;App /&gt;, document.getElementById(&apos;app&apos;));</span><br></pre></td></tr></table></figure>
+
+<p>在<code>&lt;StaffFooter addStaffItem={this.addStaffItem.bind(this)}/&gt;</code>中传入了<code>addStaffItem</code>方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//增</span><br><span class="line">addStaffItem(item)&#123;</span><br><span class="line">    this.setState(&#123;</span><br><span class="line">        staff: this.state.staff.addStaffItem(item)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>中更新了自己的state。只不过具体的逻辑是在STAFF类的方法中完成的</p>
+<p>STAFF.js：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">export default class STAFF &#123;</span><br><span class="line"></span><br><span class="line">    constructor()&#123;</span><br><span class="line">        this.allStaff = [</span><br><span class="line">            new staffItem(STAFF.rawData[0]),</span><br><span class="line">            new staffItem(STAFF.rawData[1]),</span><br><span class="line">            new staffItem(STAFF.rawData[2]),</span><br><span class="line">            new staffItem(STAFF.rawData[3]),</span><br><span class="line">            new staffItem(STAFF.rawData[4]),</span><br><span class="line">            new staffItem(STAFF.rawData[5]),</span><br><span class="line">            new staffItem(STAFF.rawData[6]),</span><br><span class="line">            new staffItem(STAFF.rawData[7]),</span><br><span class="line">            new staffItem(STAFF.rawData[8]),</span><br><span class="line">            new staffItem(STAFF.rawData[9]),</span><br><span class="line">            new staffItem(STAFF.rawData[10])</span><br><span class="line">        ];</span><br><span class="line">        this.staff = this.allStaff;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //增</span><br><span class="line">    addStaffItem(item) &#123;</span><br><span class="line">        let newItem = new staffItem(item);</span><br><span class="line">        this.allStaff.push(newItem);</span><br><span class="line">        this.staff = this.allStaff;</span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再次在浏览器中打开index.html文件，试试我们新添加的人员添加功能吧！</p>
+<h2 id="第六步：完成关键字搜索功能"><a href="#第六步：完成关键字搜索功能" class="headerlink" title="第六步：完成关键字搜索功能"></a>第六步：完成关键字搜索功能</h2><p>类似第五步新人员的添加，我们首先给StaffHeader中的搜索输入框绑定一个onChange事件，每当搜索内容改变时，触发该函数：</p>
+<p>StaffHeader.js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;;</span><br><span class="line">export default class StaffHeader extends React.Component&#123;</span><br><span class="line"></span><br><span class="line">    //search</span><br><span class="line">    handlerSearch()&#123;</span><br><span class="line">        let bar = React.findDOMNode(this.refs.searchBar);</span><br><span class="line">        let value = bar.value;</span><br><span class="line">        this.props.searchStaff(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">        return (</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">              &lt;h3 style=&#123;&#123;&apos;text-align&apos;:&apos;center&apos;&#125;&#125;&gt;人员管理系统&lt;/h3&gt;</span><br><span class="line">              &lt;table className=&quot;optHeader&quot;&gt;</span><br><span class="line">                &lt;tbody&gt;</span><br><span class="line">                  &lt;tr&gt;</span><br><span class="line">                    &lt;td className=&quot;headerTd&quot;&gt;&lt;input ref=&apos;searchBar&apos; onChange=&#123;this.handlerSearch.bind(this)&#125; type=&apos;text&apos; placeholder=&apos;Search...&apos; /&gt;&lt;/td&gt;</span><br><span class="line">                    &lt;td className=&quot;headerTd&quot;&gt;</span><br><span class="line">                        &lt;label for=&apos;idSelect&apos;&gt;人员筛选&lt;/label&gt;</span><br><span class="line">                        &lt;select id=&apos;idSelect&apos;&gt;</span><br><span class="line">                            &lt;option value=&apos;0&apos;&gt;全部&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;1&apos;&gt;主任&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;2&apos;&gt;老师&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;3&apos;&gt;学生&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;4&apos;&gt;实习&lt;/option&gt;</span><br><span class="line">                        &lt;/select&gt;</span><br><span class="line">                    &lt;/td&gt;</span><br><span class="line">                    &lt;td&gt;</span><br><span class="line">                        &lt;label for=&apos;orderSelect&apos;&gt;排列方式&lt;/label&gt;</span><br><span class="line">                        &lt;select id=&apos;orderSelect&apos;&gt;</span><br><span class="line">                            &lt;option value=&apos;0&apos;&gt;身份&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;1&apos;&gt;年龄升&lt;/option&gt;</span><br><span class="line">                            &lt;option value=&apos;2&apos;&gt;年龄降&lt;/option&gt;</span><br><span class="line">                        &lt;/select&gt;</span><br><span class="line">                    &lt;/td&gt;</span><br><span class="line">                  &lt;/tr&gt;</span><br><span class="line">                &lt;/tbody&gt;</span><br><span class="line">              &lt;/table&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样在事件处理函数中，调用了通过props属性传入的回调函数searchStaff：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//search</span><br><span class="line">handlerSearch()&#123;</span><br><span class="line">    let bar = React.findDOMNode(this.refs.searchBar);</span><br><span class="line">    let value = bar.value;</span><br><span class="line">    this.props.searchStaff(value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>逐步完善ManageSystem以及STAFF类：</p>
+<p>ManageSystem.js:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">class App extends React.Component &#123;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">        super();</span><br><span class="line">        this.state = &#123;</span><br><span class="line">            staff : new Staff,</span><br><span class="line">            staffDetail: null</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //增</span><br><span class="line">    addStaffItem(item)&#123;</span><br><span class="line">        this.setState(&#123;</span><br><span class="line">            staff: this.state.staff.addStaffItem(item)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">     * 搜索</span><br><span class="line">     */</span><br><span class="line">    searchStaff(word) &#123;</span><br><span class="line">        this.setState(&#123;</span><br><span class="line">            staff: this.state.staff.searchStaff(word)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">      return (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">          &lt;StaffHeader searchStaff=&#123;this.searchStaff.bind(this)&#125; /&gt;</span><br><span class="line">          &lt;StaffItemPanel items=&#123;this.state.staff.staff&#125;&#125;/&gt;</span><br><span class="line">          &lt;StaffFooter addStaffItem=&#123;this.addStaffItem.bind(this)&#125;/&gt;</span><br><span class="line">          &lt;StaffDetail/&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>STAFF.js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">export default class STAFF &#123;</span><br><span class="line"></span><br><span class="line">    constructor()&#123;</span><br><span class="line">        this.allStaff = [</span><br><span class="line">            new staffItem(STAFF.rawData[0]),</span><br><span class="line">            new staffItem(STAFF.rawData[1]),</span><br><span class="line">            new staffItem(STAFF.rawData[2]),</span><br><span class="line">            new staffItem(STAFF.rawData[3]),</span><br><span class="line">            new staffItem(STAFF.rawData[4]),</span><br><span class="line">            new staffItem(STAFF.rawData[5]),</span><br><span class="line">            new staffItem(STAFF.rawData[6]),</span><br><span class="line">            new staffItem(STAFF.rawData[7]),</span><br><span class="line">            new staffItem(STAFF.rawData[8]),</span><br><span class="line">            new staffItem(STAFF.rawData[9]),</span><br><span class="line">            new staffItem(STAFF.rawData[10])</span><br><span class="line">        ];</span><br><span class="line">        this.staff = this.allStaff;</span><br><span class="line">        this.word = &apos;&apos;;  //搜索关键字</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //增</span><br><span class="line">    addStaffItem(item) &#123;</span><br><span class="line">        let newItem = new staffItem(item);</span><br><span class="line">        this.allStaff.push(newItem);</span><br><span class="line">        this.staff = this.allStaff;</span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //搜索</span><br><span class="line">    searchStaff(word)&#123;</span><br><span class="line">        this.word = word;</span><br><span class="line">        this.staff = this.allStaff;</span><br><span class="line">        //在staff中搜索</span><br><span class="line">        this.staff = this.staff.filter(item =&gt; &#123;</span><br><span class="line">            return item.info.name.indexOf(word)!=-1 || </span><br><span class="line">                   (item.info.age+&apos;&apos;).indexOf(word)!=-1 || </span><br><span class="line">                   item.info.id.indexOf(word)!=-1 ||</span><br><span class="line">                   item.info.sex.indexOf(word)!=-1;</span><br><span class="line">        &#125;);</span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>依据关键字的搜索功能至此也完成了。</p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://linjw.com">Lin</a>
+            <p>原文链接：<a href="http://linjw.com/2020/09/22/">http://linjw.com/2020/09/22/</a>
+            <p>发表日期：<a href="http://linjw.com/2020/09/22/">September 22nd 2020, 8:11:11 pm</a>
+            <p>更新日期：<a href="http://linjw.com/2020/09/22/">November 4th 2020, 11:53:04 pm</a>
+            <p>版权声明：本文采用<a rel="license noopener" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2020/11/01/" title= "Sass用法总结">
+                    <div class="nextTitle">Sass用法总结</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2020/08/04/" title= "开发速查表">
+                    <div class="prevTitle">开发速查表</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <div id="comment"></div>
+    <script>
+    new Valine({
+        el: '#comment' ,
+        notify:false, 
+        verify:false, 
+        appId: "r2Hqhq9vJIggLm4Jjg1Sz7cp-gzGzoHsz",
+        appKey: "aH3DGxVNmpiWMhDeg7soNhRo",
+        placeholder: "",
+        path:window.location.pathname, 
+        avatar:'mm' 
+    });
+    </script>
+
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:franklin559@163.com" target="_blank" rel="noopener" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/FrankLIn559" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.jpg" />
+                </span>
+            
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一步：划分UI-Component"><span class="toc-number">1.</span> <span class="toc-text">第一步：划分UI Component</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二步：构建静态版的React应用"><span class="toc-number">2.</span> <span class="toc-text">第二步：构建静态版的React应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#StaffHeader"><span class="toc-number">2.1.</span> <span class="toc-text">StaffHeader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StaffItem"><span class="toc-number">2.2.</span> <span class="toc-text">StaffItem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StaffItemPanel"><span class="toc-number">2.3.</span> <span class="toc-text">StaffItemPanel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StaffFooter"><span class="toc-number">2.4.</span> <span class="toc-text">StaffFooter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StaffDetail"><span class="toc-number">2.5.</span> <span class="toc-text">StaffDetail</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ManageSystem"><span class="toc-number">2.6.</span> <span class="toc-text">ManageSystem</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三步：编译并打包"><span class="toc-number">3.</span> <span class="toc-text">第三步：编译并打包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装依赖项"><span class="toc-number">3.1.</span> <span class="toc-text">安装依赖项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编译打包"><span class="toc-number">3.2.</span> <span class="toc-text">编译打包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第四步：添加STAFF类"><span class="toc-number">4.</span> <span class="toc-text">第四步：添加STAFF类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第五步：完成新增人员功能"><span class="toc-number">5.</span> <span class="toc-text">第五步：完成新增人员功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于state"><span class="toc-number">5.1.</span> <span class="toc-text">关于state</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现人员新增功能"><span class="toc-number">5.2.</span> <span class="toc-text">实现人员新增功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第六步：完成关键字搜索功能"><span class="toc-number">6.</span> <span class="toc-text">第六步：完成关键字搜索功能</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 12
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span><a class="archive-post-title" href= "/2020/11/01/" >Sass用法总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/22</span><a class="archive-post-title" href= "/2020/09/22/" >React单页面人员管理系统</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/04</span><a class="archive-post-title" href= "/2020/08/04/" >开发速查表</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/19</span><a class="archive-post-title" href= "/2020/06/19/" >Hello World</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span><a class="archive-post-title" href= "/2020/05/11/" >什么是前端？</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span><a class="archive-post-title" href= "/2019/11/04/" >揭秘 HTML5 和 CSS3</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span><a class="archive-post-title" href= "/2019/11/02/" >移动端开发小记 - Flexbox</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span><a class="archive-post-title" href= "/2019/11/01/" >前后端分离的思考与实践</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/09</span><a class="archive-post-title" href= "/2019/06/09/" >为什么你要写博客</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/06</span><a class="archive-post-title" href= "/2019/06/06/" >如何搭建一个个人博客</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/02</span><a class="archive-post-title" href= "/2019/06/02/" >系统设计基础</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/01</span><a class="archive-post-title" href= "/2019/06/01/" >Java面试题</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Tech"><span class="iconfont-archer">&#xe606;</span>Tech</span>
+    
+        <span class="sidebar-tag-name" data-tags="Life"><span class="iconfont-archer">&#xe606;</span>Life</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "Lin"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
